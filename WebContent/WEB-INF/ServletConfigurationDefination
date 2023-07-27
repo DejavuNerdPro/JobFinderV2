@@ -1,0 +1,12 @@
+Reference : https://spring.io/blog/2014/07/24/spring-framework-4-1-handling-static-web-resources
+
+           Definition
+----------------------------------------
+
+If you consider a spring mvc configuration where all the requests are mapped to a DispatcherServlet, you can categorize those requests as requests for static and dynamic resources.
+
+The requests for dynamic resources are matched by what you program inside your controller methods, and they are the subject of the typical framework processing such as path matching, content negotiation, validation, binding, conversion, formating, argument resolving.
+
+The requests for static resources are the requests for .js, .css, or some other resources that are not getting created rather already exist deployed with your application. They are not handled by the programmatic controller methods rather by the ResourceHttpRequestHandler, simply because they have a completly different set of processing actions comparing to dynamic request (apart from path matching). You can define the location of static files for the given mapping (this can be the classpath, some other webapp folder or a file system), caching strategy for the resource, transformations (such as modyfing links in css, tranforming LESS to CSS)
+
+So its not really that you don't want the static resources to be handled by the servlet, in fact you can get a lot of possibilities and flexibility by doing so, check for example handling static web resources it is just that static and dynamic requests are a subject of different kind of actions, and by using mvc:resources tag, you designate by mappings which requests are to be handled as static requests
