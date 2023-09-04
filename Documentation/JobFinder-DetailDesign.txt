@@ -15,7 +15,7 @@ CREATE TABLE `jobfinder`.`m_user` (
   `password` VARCHAR(20) NOT NULL,
   `register_timestamp` DATETIME NULL,
   PRIMARY KEY (`uid`));
-  
+
 t_job
 CREATE TABLE `jobfinder`.`t_job` (
   `jid` VARCHAR(15) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `jobfinder`.`t_job` (
   `qualification` LONGTEXT NOT NULL,
   `register_timestamp` DATETIME NOT NULL,
   PRIMARY KEY (`jid`));
-  
+
 t_cvform
 CREATE TABLE `jobfinder`.`t_cvform` (
   `cvid` INT NOT NULL AUTO_INCREMENT,
@@ -35,9 +35,21 @@ CREATE TABLE `jobfinder`.`t_cvform` (
   `jobid` VARCHAR(15) NOT NULL,
   `data` LONGBLOB NOT NULL,
   `register_timestamp` DATETIME NULL,
-  PRIMARY KEY (`cvid`));
+  PRIMARY KEY (`cvid`),
+  INDEX `fkn_uid_idx` (`userid` ASC) VISIBLE,
+  INDEX `fkn_jid_idx` (`jobid` ASC) VISIBLE,
+  CONSTRAINT `fkn_uid`
+    FOREIGN KEY (`userid`)
+    REFERENCES `jobfinder`.`m_user` (`uid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fkn_jid`
+    FOREIGN KEY (`jobid`)
+    REFERENCES `jobfinder`.`t_job` (`jid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
-t_vacancy  
+t_vacancy
 CREATE TABLE `jobfinder`.`t_vacancy` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `userid` VARCHAR(15) NOT NULL,
@@ -57,7 +69,7 @@ CREATE TABLE `jobfinder`.`t_vacancy` (
     REFERENCES `jobfinder`.`t_job` (`jid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-	
+
 m_company
 CREATE TABLE `jobfinder`.`m_company` (
   `cid` INT NOT NULL AUTO_INCREMENT,
@@ -65,7 +77,7 @@ CREATE TABLE `jobfinder`.`m_company` (
   `location` VARCHAR(45) NOT NULL,
   `logo` LONGBLOB NULL,
   PRIMARY KEY (`cid`));
-  
+
 t_job_company
 CREATE TABLE `jobfinder`.`t_job_company` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -85,7 +97,7 @@ CREATE TABLE `jobfinder`.`t_job_company` (
     REFERENCES `jobfinder`.`t_job` (`jid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-	
+
 
             Data Category Definition
 -----------------------------------
