@@ -18,11 +18,8 @@
     <spring:url value="/resources/css/style.css" var="style" htmlEscape="true"/>
 
     <!-- Favicon -->
-<<<<<<< HEAD
     <link rel="icon" href="${favicon}">
-=======
     <link href="img/favicon.ico" rel="icon">
->>>>>>> main
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +27,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
-<<<<<<< HEAD
     <spring:url value="https://cdnjs.cloudflare.com/ajax/scripts/font-awesome/5.10.0/css/all.min.css" var="ajaxcss" htmlEscape="true"/>
     <link href="${ajaxcss}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -44,7 +40,6 @@
 
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="${style}">
-=======
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -57,7 +52,6 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
->>>>>>> main
 </head>
 
 <body>

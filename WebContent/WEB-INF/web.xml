@@ -30,11 +30,6 @@
   <listener>
     <listener-class> org.springframework.web.context.ContextLoaderListener
     </listener-class>
-<<<<<<< HEAD
   </listener>
-  </web-app>
-=======
-  </listener> -->
 
 </web-app>
->>>>>>> main
