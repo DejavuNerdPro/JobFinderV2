@@ -39,9 +39,41 @@
 
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="${style}">
+
+    <!-- AJAX -->
+    <%-- <spring:url value="https://code.jquery.com/jquery-3.6.0.min.js" var="ajaxjs" htmlEscape="true"/> --%>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
+<script>
+/* $(document).ready(function(){
+	$("#applyButton").click(function(){
+			var name=$("#name").val();
+			var email=$("#email").val();
+			var title=$("#title").val();
+			var company=$("#company").val();
+			var website=$("#website").val();
+
+			var file=document.getElementById('file');
+			var data=file.files[0];
+			console.log("Data : ",data);
+
+			var parameters={name:name,email:email,title:title,company:company,website:website,file:data};
+			console.log("Parameters :",parameters);
+
+			$.ajax({
+				url:"/JobFinder/applyJob",
+				type:"POST",
+				data:parameters,
+				success:function(response){
+					console.log("Response : ",response);
+				},
+			});
+		});
+}); */
+
+</script>
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -136,31 +168,31 @@
 
                         <div class="">
                             <h4 class="mb-4">Apply For The Job</h4>
-                            <form action="/JobFinder/applyJob" method="get">
+                            <form action="/JobFinder/applyJob" method="post" enctype="multipart/form-data">
                                 <div class="row g-3">
                                     <div class="col-12 col-sm-6">
-                                        <input type="text" class="form-control" placeholder="Your Name" name="name">
+                                        <input type="text" class="form-control" placeholder="Your Name" name="name" id="name">
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <input type="email" class="form-control" placeholder="Your Email" name="email">
+                                        <input type="email" class="form-control" placeholder="Your Email" name="email" id="email">
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <input type="text" class="form-control" placeholder="Portfolio Website/facebook/linkedin" name="website">
+                                        <input type="text" class="form-control" placeholder="Portfolio Website/facebook/linkedin" name="website" id="website">
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <input type="file" class="form-control bg-white" name="file">
+                                        <input type="file" class="form-control bg-white" name="file" id="file">
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <input type="text" class="form-control bg-white" name="position" value="${param.title}" hidden>
+                                        <input type="text" class="form-control bg-white" name="position" value="${param.title}" id="title" hidden>
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <input type="text" class="form-control bg-white" name="company" value="${param.company}" hidden>
+                                        <input type="text" class="form-control bg-white" name="company" value="${param.company}" id="company" hidden>
                                     </div>
                                     <div class="col-12">
                                         <textarea class="form-control" rows="5" placeholder="Coverletter"></textarea>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Apply Now</button>
+                                        <button class="btn btn-primary w-100" type="submit" id="applyButton">Apply Now</button>
                                     </div>
                                 </div>
                             </form>

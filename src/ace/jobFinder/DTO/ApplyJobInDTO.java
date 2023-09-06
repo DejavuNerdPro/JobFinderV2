@@ -7,13 +7,13 @@ String name;
 String email;
 String website;
 MultipartFile file;
-String position;
+String title;
 String company;
-public String getPosition() {
-	return position;
+public String getTitle() {
+	return title;
 }
-public void setPosition(String position) {
-	this.position = position;
+public void setTitle(String title) {
+	this.title = title;
 }
 public String getCompany() {
 	return company;

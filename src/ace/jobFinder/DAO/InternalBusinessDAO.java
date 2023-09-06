@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mysql.cj.jdbc.Blob;
 
@@ -250,24 +252,39 @@ public class InternalBusinessDAO {
 		return flag;
 	}
 
-	public int insertApplyJobData(ApplyJobInDTO form,InputStream file){
+	public int insertApplyJobData(String name,String email,String title,String website,String company,MultipartFile file){
 		String query="insert into t_cvform (data,name,email,website,position,company) values (?,?,?,?,?,?)";
 		PreparedStatement statement=DBUtility.getPreparedStatement(connection, query);
 		int flag=0;
-		/*InputStream inputStream=new ByteArrayInputStream(file);*/
 		try{
-			statement.setBlob(1, file);
-			statement.setString(2, form.getName());
-			statement.setString(3, form.getEmail());
-			statement.setString(4, form.getWebsite());
-			statement.setString(5,form.getPosition());
-			statement.setString(6,form.getCompany());
+			statement.setBytes(1,file.getBytes());
+			statement.setString(2, name);
+			statement.setString(3,email);
+			statement.setString(4,website);
+			statement.setString(5,title);
+			statement.setString(6,company);
 			flag=statement.executeUpdate();
 			System.out.println("Apply job passed.");
-		}catch(SQLException e){
+		}catch(SQLException|IOException e){
 			e.printStackTrace();
 			System.out.println(e);
 			System.out.println("Apply job insertion failed.");
+		}
+		return flag;
+	}
+
+	public int uploadFileData(MultipartFile file){
+		String query="insert into t_cvform (data) values (?)";
+		PreparedStatement statement=DBUtility.getPreparedStatement(connection, query);
+		int flag=0;
+		try{
+			statement.setBytes(1,file.getBytes());
+			flag=statement.executeUpdate();
+			System.out.println("File uploaded.");
+		}catch(SQLException|IOException e){
+			e.printStackTrace();
+			System.out.println(e);
+			System.out.println("File Failed to upload in server.");
 		}
 		return flag;
 	}

@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -132,20 +136,24 @@ public class JobFinderController {
 		return null;
 	}
 
-	@GetMapping("/applyJob")
-	public String doApplyJob(@ModelAttribute("applyJobInDTO")ApplyJobInDTO applyJobInDTO){
-		MultipartFile file=applyJobInDTO.getFile();
-		InputStream data = null;
-		try {
-			data=file.getInputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("File to Byte transform failed.");
-		}
-		int result=dao.insertApplyJobData(applyJobInDTO, data);
+	@PostMapping("/applyJob")
+	public String doApplyJob(@ModelAttribute("applyJobInDTO")ApplyJobInDTO applyJobInDTO,@RequestPart("file")MultipartFile file){
+		int result=dao.insertApplyJobData(applyJobInDTO.getName(),applyJobInDTO.getEmail(),applyJobInDTO.getTitle(),applyJobInDTO.getWebsite(),applyJobInDTO.getCompany(),file);
 		if(result>0){
 			return "redirect:/job-detail.jsp";
+		}
+		return null;
+	}
+
+	@PostMapping("/uploadFile")
+	public ResponseEntity<String> uploadFile(@RequestPart("file")MultipartFile file){
+		if(!file.isEmpty()){
+			int result=dao.uploadFileData(file);
+			if(result==1){
+				return new ResponseEntity<>("File Uploaded.",HttpStatus.OK);
+			}
+		}else{
+			return new ResponseEntity<>("File Failed to upload",HttpStatus.BAD_REQUEST);
 		}
 		return null;
 	}
