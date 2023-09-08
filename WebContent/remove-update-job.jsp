@@ -125,12 +125,12 @@ display:none;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     }
 
-.panel-footer{
+/* .panel-footer{
 position: fixed;
    left: 0;
    bottom: 0;
    width: 100%;
-}
+} */
 
     .styled-table {
     border-collapse: collapse;
@@ -372,7 +372,7 @@ $(document).ready(function(){
                            <a href="${updateData}" class="nav-item nav-link">Update</a>
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/removeJob?jobId=${job.jobId}" class="nav-item nav-link" id="delete">Delete</a>
+                            <a href="${pageContext.request.contextPath}/removeJob?jobId=${job.jobId}" class="nav-item nav-link" id="delete" style="color:red;">Delete</a>
                         </td>
                     </tr>
                     </c:forEach>

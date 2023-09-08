@@ -180,7 +180,7 @@
                                         <input type="text" class="form-control" placeholder="Portfolio Website/facebook/linkedin" name="website" id="website">
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <input type="file" class="form-control bg-white" name="file" id="file">
+                                        <input type="file" class="form-control bg-white" name="file" id="file" accept="application/pdf">
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <input type="text" class="form-control bg-white" name="position" value="${param.title}" id="title" hidden>

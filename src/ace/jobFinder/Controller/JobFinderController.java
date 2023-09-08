@@ -54,15 +54,16 @@ public class JobFinderController {
 		user.setUsername(registerInDTO.getUsername());
 		if(registerInDTO.getPassword().length()<6){
 			session.setAttribute("passwordLengthFailed", "must be at least 6 characters.");
-			return "redirect:/signup.jsp";
+			return "redirect:/signup.jsp?message=must be at least 6 characters.";
 		}
 		if(registerInDTO.getPassword()!=null){
 			if(!registerInDTO.getPassword().equals(registerInDTO.getRepassword())){
 				session.setAttribute("wrongPassword","Password is not same.");
-				return "redirect:/signup.jsp";
+				return "redirect:/signup.jsp?message=Password is not same.";
 			}else{
 				dao.UserDataInsertion(user);
 				session.setAttribute("IsRegistered", "true");
+				session.setAttribute("login", "true");
 				return "redirect:/index.jsp";
 			}
 		}
@@ -79,7 +80,7 @@ public class JobFinderController {
 
 		if(validateLoginInDTO.getPassword().length()<6){
 		session.setAttribute("loginPasswordLengthFailed", "must be at least 6 characters.");
-		return "redirect:/login.jsp";
+		return "redirect:/login.jsp?message=must be at least 6 characters.";
 		}
 		List<User> userList=dao.getUserDataForLogin(validateLoginInDTO);
 		if(userList==null){
@@ -118,6 +119,20 @@ public class JobFinderController {
 		return "redirect:/remove-update-job.jsp";
 	}
 
+	@GetMapping("/filterJobType")
+	public String filterJobType(@RequestParam("param")String param,HttpServletRequest request){
+		HttpSession session=request.getSession();
+		String type=param.equals("full")?"full-time":"part-time";
+		List<Job> jobList=dao.getJobTypeData(type);
+		if(jobList.size()!=0){
+			session.setAttribute("jobList",jobList);
+			return "redirect:/job-list.jsp";
+		}else{
+			session.setAttribute("jobList",null);
+		}
+		return "redirect:/job-list.jsp";
+	}
+
 	@GetMapping("/updateJob")
 		public String doUpdateJob(@ModelAttribute("updateJobInDTO")UpdateJobInDTO updateJobInDTO){
 		int result=dao.updateJob(updateJobInDTO);
@@ -137,10 +152,19 @@ public class JobFinderController {
 	}
 
 	@PostMapping("/applyJob")
-	public String doApplyJob(@ModelAttribute("applyJobInDTO")ApplyJobInDTO applyJobInDTO,@RequestPart("file")MultipartFile file){
+	public String doApplyJob(@ModelAttribute("applyJobInDTO")ApplyJobInDTO applyJobInDTO,@RequestPart("file")MultipartFile file,HttpServletRequest request){
+		HttpSession session=request.getSession();
+		String isRegistered=(String) session.getAttribute("IsRegistered");
+		String isLogined=(String) session.getAttribute("login");
+		if(isLogined==null){
+			return "redirect:/job-list.jsp?message=f";
+		}
+		if(isRegistered==null){
+			return "redirect:/job-list.jsp?message=f";
+		}
 		int result=dao.insertApplyJobData(applyJobInDTO.getName(),applyJobInDTO.getEmail(),applyJobInDTO.getTitle(),applyJobInDTO.getWebsite(),applyJobInDTO.getCompany(),file);
 		if(result>0){
-			return "redirect:/job-detail.jsp";
+			return "redirect:/job-list.jsp?message=p";
 		}
 		return null;
 	}
@@ -166,5 +190,29 @@ public class JobFinderController {
 			session.setAttribute("applyData", cvFormList);
 		}
 		return "redirect:/adminHomePage";
+	}
+
+	@GetMapping("/getJobCategory")
+	public String getJobCategory(@RequestParam("category")String category,HttpServletRequest request){
+		HttpSession session=request.getSession();
+
+		String position="";
+		if(category.equals("marketing"))position="Marketing";
+		if(category.equals("customerservice"))position="Customer Service";
+		if(category.equals("humanresource"))position="Human Resource";
+		if(category.equals("projectmanagement"))position="Project Management";
+		if(category.equals("businessdevelopment"))position="Business Development";
+		if(category.equals("salescommunication"))position="Sales & Communication";
+		if(category.equals("education"))position="Teaching & Education";
+		if(category.equals("se"))position="Software Engineer";
+
+		List<Job> jobList=dao.getCategoryData(position);
+		if(jobList.size()!=0){
+			session.setAttribute("jobList",jobList);
+			return "redirect:/job-list.jsp";
+		}else{
+			session.setAttribute("jobList",null);
+		}
+		return "redirect:/job-list.jsp";
 	}
 }

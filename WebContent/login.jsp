@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -140,7 +141,10 @@ span.psw {
       <input type="text" placeholder="Enter Email" name="email" required>
 
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required><br/><small style="color:red;">${sessionScope.loginPasswordLengthFailed}</small>
+      <input type="password" placeholder="Enter Password" name="password" required><br/>
+      <c:if test="${param.message != null}">
+        <small style="color:red;">Password <c:out value="${param.message}" /></small>
+      </c:if>
 
       <button type="submit">Login</button>
     </div>

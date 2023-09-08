@@ -40,6 +40,9 @@
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="${style}">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!-- Notiflix -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notiflix/2.7.0/notiflix-aio-1.0.0.min.js"></script>
 </head>
 
 <body>
@@ -47,6 +50,38 @@
 $(document).ready(function(){
 	$.get('loadJobData');
 	console.log("loadJobData");
+	$("#featured").click(function(){
+		console.log("Featured Tap");
+		$.get('loadJobData');
+		window.location.href="http://localhost:8080/JobFinder/job-list.jsp";
+		console.log("reloaded.");
+	});
+	$("#fullTime").click(function(){
+		console.log("Full Time Job Retrieving...");
+		$.ajax({
+			url:"/JobFinder/filterJobType",
+			type:"GET",
+			data:{param:"full"},
+			success:function(response){
+				console.log("Response : ");
+				window.location.href="http://localhost:8080/JobFinder/job-list.jsp";
+				console.log("reloaded.");
+			},
+	})
+	});
+	$("#partTime").click(function(){
+		console.log("Part Time Job Retrieving...");
+		$.ajax({
+			url:"/JobFinder/filterJobType",
+			type:"GET",
+			data:{param:"part"},
+			success:function(response){
+				console.log("Response : ");
+				window.location.href="http://localhost:8080/JobFinder/job-list.jsp";
+				console.log("reloaded.");
+			},
+	})
+	});
 });
 </script>
     <div class="container-xxl bg-white p-0">
@@ -108,6 +143,23 @@ $(document).ready(function(){
         </div>
         <!-- Header End -->
 
+        <!-- Job Apply Message Start -->
+        <c:if test="${param.message != null}">
+        <c:if test="${param.message=='p'}">
+        <script>
+        console.log("P");
+        alert("Job Applied.");
+        </script>
+        </c:if>
+        <c:if test="${param.message=='f'}">
+        <script>
+        console.log("F");
+        alert("Please Create Account First.");
+        </script>
+        </c:if>
+      </c:if>
+        <!-- Job Apply Message End-->
+
 
         <!-- Jobs Start -->
         <div class="container-xxl py-5">
@@ -116,18 +168,18 @@ $(document).ready(function(){
                 <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
                     <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                         <li class="nav-item">
-                            <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
-                                <h6 class="mt-n1 mb-0">Featured</h6>
+                            <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3" data-bs-toggle="pill" href="#tab-1">
+                                <h6 class="mt-n1 mb-0" id="featured">Featured</h6>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                                <h6 class="mt-n1 mb-0">Full Time</h6>
+                                <h6 class="mt-n1 mb-0" id="fullTime">Full Time</h6>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
-                                <h6 class="mt-n1 mb-0">Part Time</h6>
+                                <h6 class="mt-n1 mb-0" id="partTime">Part Time</h6>
                             </a>
                         </li>
                     </ul>

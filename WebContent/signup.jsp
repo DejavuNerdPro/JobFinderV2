@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
     <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -87,11 +88,17 @@ a {
     <label for="email"><b>Email</b></label>
     <input type="text" placeholder="Enter Email" name="email" id="email"/>
 
-    <label for="psw"><b>Password</b></label><br/><small style="color:red;">${sessionScope.passwordLengthFailed}</small>
-    <input type="password" placeholder="Enter Password" name="password" id="psw"/>
+    <label for="psw"><b>Password</b></label><br/>
+    <input type="password" placeholder="Enter Password" name="password" id="psw"/><br/>
+    <c:if test="${param.message != null}">
+        <small style="color:red;">Password <c:out value="${param.message}" /></small>
+    </c:if>
 
     <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="repassword" id="psw-repeat"/><br/><small style="color:red;">${sessionScope.wrongPassword}</small>
+    <input type="password" placeholder="Repeat Password" name="repassword" id="psw-repeat"/><br/>
+    <c:if test="${param.message != null}">
+        <small style="color:red;">Password <c:out value="${param.message}" /></small>
+    </c:if>
     <hr>
     <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 

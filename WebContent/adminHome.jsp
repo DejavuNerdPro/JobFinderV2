@@ -162,12 +162,12 @@ display:none;
         font-size: 20px;
     }
 
-.panel-footer{
+/* .panel-footer{
 position: fixed;
    left: 0;
    bottom: 0;
    width: 100%;
-}
+} */
 
 </style>
 <body>
@@ -206,7 +206,7 @@ $(document).ready(function(){
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="home.html" class="nav-item nav-link">Home</a>
+                    <a href="adminHome.jsp" class="nav-item nav-link">Home</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
                         <div class="dropdown-menu rounded-0 m-0">
@@ -307,12 +307,84 @@ $(document).ready(function(){
                         <td>${data.company}</td>
                         <td>
                             <button class="btn"
-                            onclick="myFunction()">
-                                <i class="fafa-download"></i>Download</button>
+                            onclick="myFunction('${data.data}')">
+                                <i class="fa fa-download"></i>Download</button>
                             <script>
-                                function myFunction() {
-                                alert("Are you sure to download !");
+                            function myFunction(fileData){
+                            	alert("Do you want to download");
+                            	console.log("File Content : ",fileData);
+                            	// Assume you have a Blob containing PDF binary data
+                            	const blobData = new Blob([fileData], { type: 'application/pdf' });
+
+                            	// Create a FileReader
+                            	const reader = new FileReader();
+
+                            	// Define a callback function to handle the FileReader's load event
+                            	reader.onload = function(event) {
+                            	  // event.target.result contains the binary data
+                            	  const binaryData = event.target.result;
+
+                            	  // Create a new Blob with the binary data and set the type to 'application/pdf'
+                            	  const pdfBlob = new Blob([binaryData], { type: 'application/pdf' });
+
+                            	  // Create a URL for the new Blob
+                            	  const pdfBlobURL = URL.createObjectURL(pdfBlob);
+
+                            	  // Create an anchor element
+                            	  const downloadLink = document.createElement('a');
+
+                            	  // Set the href attribute to the Blob URL
+                            	  downloadLink.href = pdfBlobURL;
+
+                            	  // Set the download attribute to specify the file name
+                            	  downloadLink.download = 'cv_form.pdf';
+
+                            	  // Append the anchor element to the document or a container
+                            	  document.body.appendChild(downloadLink);
+
+                            	  // Trigger a click event on the anchor element to initiate the download
+                            	  downloadLink.click();
+
+                            	  // Clean up by revoking the Blob URL when it's no longer needed
+                            	  URL.revokeObjectURL(pdfBlobURL);
+                            	};
+
+                            	// Read the Blob data as an ArrayBuffer (binary data)
+                            	reader.readAsArrayBuffer(blobData);
+                            	reader.onerror = function(event) {
+                            		  console.error('File reading error:', event.target.error);
+                            		};
+
                             }
+                                /* function myFunction(fileData) {
+                                alert("Are you sure to download !");
+                                console.log("File Content : ",fileData);
+
+                             // Create a Blob object from the binary data
+                                const pdfBlob = new Blob([fileData], { type: 'application/pdf' });
+                                console.log("PDF Blob : ",pdfBlob);
+
+                                // Create an object URL for the Blob
+                                const pdfBlobURL = URL.createObjectURL(pdfBlob);
+                            	console.log("Blob URL : ",pdfBlobURL);
+
+                                // Option 1: Display the PDF in an iframe
+                                const iframe = document.createElement('iframe');
+                                iframe.src = pdfBlobURL;
+                                iframe.width = '100%';
+                                iframe.height = '500px'; // Set the desired height
+                                document.body.appendChild(iframe);
+
+                                // Option 2: Create a download link
+                                const downloadLink = document.createElement('a');
+                                downloadLink.href = pdfBlobURL;
+                                console.log("Download Link : ",downloadLink.href);
+                                downloadLink.download = 'downloaded_pdf.pdf';
+                                downloadLink.textContent = 'Download PDF';
+                                document.body.appendChild(downloadLink);
+                                downloadLink.click();
+                                URL.revokeObjectURL(pdfBlobURL);
+                            } */
                             </script>
                         </td>
                         <td><button class="btn btn-danger">Remove</button></td>

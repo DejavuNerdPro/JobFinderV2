@@ -210,6 +210,39 @@ public class InternalBusinessDAO {
 		return jobList;
 	}
 
+	public List<Job> getJobTypeData(String type){
+		String query="select * from t_job where type=?";
+		PreparedStatement statement=DBUtility.getPreparedStatement(connection, query);
+
+		List<Job> jobList=new ArrayList<>();
+		try {
+			statement.setString(1, type);
+			ResultSet result=DBUtility.getResult(statement);
+			ResultSetMetaData columnName=(ResultSetMetaData) result.getMetaData();
+			while(result.next()){
+				Job job=new Job();
+				job.setJobId(result.getString(columnName.getColumnName(1)));
+				job.setTitle(result.getString(columnName.getColumnName(2)));
+				job.setLocation(result.getString(columnName.getColumnName(3)));
+				job.setType(result.getString(columnName.getColumnName(4)));
+				job.setSalary(result.getDouble(columnName.getColumnName(5)));
+				job.setDescription(result.getString(columnName.getColumnName(6)));
+				job.setResponsibility(result.getString(columnName.getColumnName(7)));
+				job.setQualification(result.getString(columnName.getColumnName(8)));
+				job.setVacancy(result.getInt(columnName.getColumnName(9)));
+				job.setCompany(result.getString(columnName.getColumnName(10)));
+				job.setDateLine(result.getTimestamp(columnName.getColumnName(11)));
+				jobList.add(job);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e);
+			System.out.println("Job Data Type retrieval failed.");
+		}
+		return jobList;
+	}
+
 	public int updateJob(UpdateJobInDTO job){
 		String query="update t_job set title=?,location=?,type=?,salary=?,description=?,responsibility=?,qualification=?,company=? where jobId=?";
 		PreparedStatement statement=DBUtility.getPreparedStatement(connection, query);
@@ -290,7 +323,7 @@ public class InternalBusinessDAO {
 	}
 
 	public List<CvForm> getApplyData(){
-		String query="select * from t_cvform";
+		String query="select * from t_cvform where data is not null";
 		PreparedStatement statement=DBUtility.getPreparedStatement(connection, query);
 		List<CvForm> cvFormList=new ArrayList<>();
 		try{
@@ -313,5 +346,38 @@ public class InternalBusinessDAO {
 			System.out.println("Apply Data retrieval Failed.");
 		}
 		return cvFormList;
+	}
+
+	public List<Job> getCategoryData(String position){
+		String query="select * from t_job where title=?";
+		PreparedStatement statement=DBUtility.getPreparedStatement(connection, query);
+
+		List<Job> jobList=new ArrayList<>();
+		try {
+			statement.setString(1, position);
+			ResultSet result=DBUtility.getResult(statement);
+			ResultSetMetaData columnName=(ResultSetMetaData) result.getMetaData();
+			while(result.next()){
+				Job job=new Job();
+				job.setJobId(result.getString(columnName.getColumnName(1)));
+				job.setTitle(result.getString(columnName.getColumnName(2)));
+				job.setLocation(result.getString(columnName.getColumnName(3)));
+				job.setType(result.getString(columnName.getColumnName(4)));
+				job.setSalary(result.getDouble(columnName.getColumnName(5)));
+				job.setDescription(result.getString(columnName.getColumnName(6)));
+				job.setResponsibility(result.getString(columnName.getColumnName(7)));
+				job.setQualification(result.getString(columnName.getColumnName(8)));
+				job.setVacancy(result.getInt(columnName.getColumnName(9)));
+				job.setCompany(result.getString(columnName.getColumnName(10)));
+				job.setDateLine(result.getTimestamp(columnName.getColumnName(11)));
+				jobList.add(job);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e);
+			System.out.println("Job Data Type retrieval failed.");
+		}
+		return jobList;
 	}
 }
